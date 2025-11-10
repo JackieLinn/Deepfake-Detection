@@ -1,2 +1,7 @@
 /dataset/train
 /dataset/test
+
+/logs/*.log
+/logs/*.txt
+
+/save/*.pth

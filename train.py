@@ -8,13 +8,14 @@ from my_dataset import MyDataSet
 from models.alexnet import AlexNet
 from models.vgg import VGG19
 from models.resnext import resnext101_32x8d as resnext101
-from utils import read_split_data, train_loop, get_logger
+from utils import read_data, train_loop, get_logger
 
 
 def run(args):
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
+    print("Using {}".format(device))
 
-    train_images_path, train_images_label, val_images_path, val_images_label = read_split_data(args.data_path)
+    train_images_path, train_images_label, test_images_path, test_images_label = read_data(args.data_path)
 
     img_size = 256
     data_transform = {
@@ -28,7 +29,7 @@ def run(args):
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # 标准化
         ]),
-        "val": transforms.Compose([
+        "test": transforms.Compose([
             transforms.Resize(int(img_size * 1.143)),
             transforms.CenterCrop(img_size),
             transforms.ToTensor(),
@@ -42,9 +43,9 @@ def run(args):
                               transform=data_transform["train"])
 
     # 实例化验证数据集
-    val_dataset = MyDataSet(images_path=val_images_path,
-                            images_class=val_images_label,
-                            transform=data_transform["val"])
+    test_dataset = MyDataSet(images_path=test_images_path,
+                             images_class=test_images_label,
+                             transform=data_transform["test"])
 
     batch_size = args.batch_size
     num_workers = min([os.cpu_count(), batch_size if batch_size > 1 else 0, 8])
@@ -56,19 +57,21 @@ def run(args):
                                                num_workers=num_workers,
                                                collate_fn=train_dataset.collate_fn)
 
-    val_loader = torch.utils.data.DataLoader(val_dataset,
-                                             batch_size=batch_size,
-                                             shuffle=False,
-                                             pin_memory=True,
-                                             num_workers=num_workers,
-                                             collate_fn=val_dataset.collate_fn)
+    test_loader = torch.utils.data.DataLoader(test_dataset,
+                                              batch_size=batch_size,
+                                              shuffle=False,
+                                              pin_memory=True,
+                                              num_workers=num_workers,
+                                              collate_fn=test_dataset.collate_fn)
 
+    # 构造模型
     if args.model == 'vgg':
         model = VGG19(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
     else:
         model = AlexNet(num_classes=args.num_classes).to(device)
+    print(f"Using model: {args.model}")
 
     if args.weights != "":
         assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)
@@ -92,25 +95,25 @@ def run(args):
     optimizer = optim.AdamW(parameter_group, lr=args.lr, weight_decay=5E-2)
 
     best_acc = 0.0
-    logger = get_logger()
+    logger = get_logger(args.model)
     logger.info("Start training and validating...")
     for epoch in range(args.epochs):
-        val_acc, all_labels, all_preds = train_loop(
+        test_acc, all_labels, all_preds = train_loop(
             model=model,
             optimizer=optimizer,
             train_loader=train_loader,
-            val_loader=val_loader,
+            test_loader=test_loader,
             device=device,
             epoch=epoch,
             logger=logger,
         )
 
-        if val_acc > best_acc:
-            best_acc = val_acc
-            torch.save(model.state_dict(), "best_model.pth")
+        if test_acc > best_acc:
+            best_acc = test_acc
+            torch.save(model.state_dict(), f"./save/best_{args.model}_model.pth")
             logger.info("Best model saved!")
 
             # 保存 all_labels 和 all_preds 到 txt 文件
-            with open("./logs/best_model_labels_preds.txt", "w") as f:
+            with open(f"./logs/best_{args.model}_model.txt", "w") as f:
                 for label, pred in zip(all_labels, all_preds):
                     f.write(f"{label} {pred}\n")

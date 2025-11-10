@@ -4,13 +4,23 @@ import random
 import logging
 
 import torch
+import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
 
 
+def set_random_seed(seed):
+    random.seed(seed)  # Python的随机种子
+    np.random.seed(seed)  # Numpy的随机种子
+    torch.manual_seed(seed)  # PyTorch的CPU随机种子
+    torch.cuda.manual_seed(seed)  # PyTorch的GPU随机种子
+    torch.cuda.manual_seed_all(seed)  # 如果你使用多个GPU，设置所有GPU的种子
+    # torch.backends.cudnn.deterministic = True  # 确保卷积操作是确定的
+    # torch.backends.cudnn.benchmark = False  # 禁止cudnn自动优化，确保每次运行的一致性
+
+
 # 读取数据集
 def read_data(root: str):
-    random.seed(3407)  # 保证随机结果可复现
     assert os.path.exists(root), "dataset root: {} does not exist.".format(root)
 
     # train 和 test 文件夹路径
@@ -135,7 +145,7 @@ def evaluate(model, data_loader, device, epoch):
     precision = precision_score(all_labels, all_preds, average='binary', zero_division=0)
     recall = recall_score(all_labels, all_preds, average='binary', zero_division=0)
     f1 = f1_score(all_labels, all_preds, average='binary', zero_division=0)
-    auc = roc_auc_score(all_labels, all_preds_proba)
+    auc = roc_auc_score(all_labels, np.array(all_preds_proba)[:, 1])
 
     return (accu_loss.item() / (step + 1),
             accu_num.item() / sample_num,

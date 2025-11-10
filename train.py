@@ -8,10 +8,12 @@ from my_dataset import MyDataSet
 from models.alexnet import AlexNet
 from models.vgg import VGG19
 from models.resnext import resnext101_32x8d as resnext101
-from utils import read_data, train_loop, get_logger
+from utils import set_random_seed, read_data, train_loop, get_logger
 
 
 def run(args):
+    set_random_seed(3407)
+
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print("Using {}".format(device))
 

@@ -6,6 +6,8 @@ from torchvision import transforms
 
 from my_dataset import MyDataSet
 from models.alexnet import AlexNet
+from models.vgg import VGG19
+from models.resnext import resnext101_32x8d as resnext101
 from utils import read_split_data, train_loop, get_logger
 
 
@@ -61,7 +63,12 @@ def run(args):
                                              num_workers=num_workers,
                                              collate_fn=val_dataset.collate_fn)
 
-    model = AlexNet(num_classes=args.num_classes).to(device)
+    if args.model == 'vgg':
+        model = VGG19(num_classes=args.num_classes).to(device)
+    elif args.model == 'resnext':
+        model = resnext101(num_classes=args.num_classes).to(device)
+    else:
+        model = AlexNet(num_classes=args.num_classes).to(device)
 
     if args.weights != "":
         assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)

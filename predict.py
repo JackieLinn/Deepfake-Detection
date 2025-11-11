@@ -8,14 +8,14 @@ from torchvision import transforms
 import matplotlib.pyplot as plt
 
 from models.alexnet import AlexNet
-from models.vgg import VGG19
+from models.googlenet import GoogLeNet
 from models.resnext import resnext101_32x8d as resnext101
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'vgg', 'resnext'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnext'], help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()
     print(f"Using model: {args.model}")
@@ -48,8 +48,8 @@ def main():
     # create model
     if args.model == "alexnet":
         model = AlexNet(num_classes=args.num_classes).to(device)
-    elif args.model == 'vgg':
-        model = VGG19(num_classes=args.num_classes).to(device)
+    elif args.model == 'googlenet':
+        model = GoogLeNet(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
     else:

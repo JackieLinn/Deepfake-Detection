@@ -11,12 +11,13 @@ from models.alexnet import AlexNet
 from models.googlenet import GoogLeNet
 from models.resnext import resnext101_32x8d as resnext101
 from models.densenet import densenet201
+from models.swintransformer import swin_small
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnext'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnext', 'densenet', 'swint'], help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()
     print(f"Using model: {args.model}")
@@ -55,6 +56,8 @@ def main():
         model = resnext101(num_classes=args.num_classes).to(device)
     elif args.model == 'densenet':
         model = densenet201(num_classes=args.num_classes).to(device)
+    elif args.model == 'swint':
+        model = swin_small(num_classes=args.num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
 

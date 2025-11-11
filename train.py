@@ -6,9 +6,9 @@ from torchvision import transforms
 
 from my_dataset import MyDataSet
 from models.alexnet import AlexNet
-from models.vgg import VGG16
 from models.googlenet import GoogLeNet
 from models.resnext import resnext101_32x8d as resnext101
+from models.densenet import densenet201
 from utils import set_random_seed, read_data, train_loop, get_logger
 
 
@@ -70,12 +70,12 @@ def run(args):
     # 构造模型
     if args.model == "alexnet":
         model = AlexNet(num_classes=args.num_classes).to(device)
-    elif args.model == "vgg":
-        model = VGG16(num_classes=args.num_classes).to(device)
     elif args.model == 'googlenet':
         model = GoogLeNet(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
+    elif args.model == 'densenet':
+        model = densenet201(num_classes=args.num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
     print(f"Using model: {args.model}")

@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from models.alexnet import AlexNet
 from models.googlenet import GoogLeNet
 from models.resnext import resnext101_32x8d as resnext101
+from models.densenet import densenet201
 
 
 def main():
@@ -52,6 +53,8 @@ def main():
         model = GoogLeNet(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
+    elif args.model == 'densenet':
+        model = densenet201(num_classes=args.num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
 

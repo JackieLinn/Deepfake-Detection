@@ -6,10 +6,10 @@ from train import run
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnext', 'vgg'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnext', 'densenet'], help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--epochs', type=int, default=200)
-    parser.add_argument('--batch-size', type=int, default=32)
+    parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=0.00001)
     parser.add_argument('--data-path', type=str, default="./dataset")
     # 预训练权重路径，如果不想载入就设置为空字符

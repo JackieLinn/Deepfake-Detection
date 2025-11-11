@@ -6,3 +6,4 @@ pillow~=11.3.0
 torch~=2.8.0+cu128
 setuptools~=78.1.1
 numpy~=1.24.4
+seaborn~=0.13.2

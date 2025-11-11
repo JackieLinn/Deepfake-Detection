@@ -67,12 +67,14 @@ def run(args):
                                               collate_fn=test_dataset.collate_fn)
 
     # 构造模型
-    if args.model == 'vgg':
+    if args.model == "alexnet":
+        model = AlexNet(num_classes=args.num_classes).to(device)
+    elif args.model == 'vgg':
         model = VGG19(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
     else:
-        model = AlexNet(num_classes=args.num_classes).to(device)
+        raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
     print(f"Using model: {args.model}")
 
     if args.weights != "":

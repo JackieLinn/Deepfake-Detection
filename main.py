@@ -6,7 +6,7 @@ from train import run
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnext', 'densenet', 'swint'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint'], help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--batch-size', type=int, default=16)

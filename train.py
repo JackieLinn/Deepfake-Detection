@@ -7,6 +7,7 @@ from torchvision import transforms
 from my_dataset import MyDataSet
 from models.alexnet import AlexNet
 from models.googlenet import GoogLeNet
+from models.resnet import resnet101
 from models.resnext import resnext101_32x8d as resnext101
 from models.densenet import densenet201
 from models.swintransformer import swin_small
@@ -73,6 +74,8 @@ def run(args):
         model = AlexNet(num_classes=args.num_classes).to(device)
     elif args.model == 'googlenet':
         model = GoogLeNet(num_classes=args.num_classes).to(device)
+    elif args.model == 'resnet':
+        model = resnet101(num_classes=args.num_classes).to(device)
     elif args.model == 'resnext':
         model = resnext101(num_classes=args.num_classes).to(device)
     elif args.model == 'densenet':

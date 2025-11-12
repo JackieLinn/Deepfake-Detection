@@ -18,7 +18,7 @@ from models.swintransformer import swin_small
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnext', 'densenet', 'swint'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint'], help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()
     print(f"Using model: {args.model}")

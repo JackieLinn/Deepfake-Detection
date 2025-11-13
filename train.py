@@ -11,6 +11,7 @@ from models.resnet import resnet101
 from models.resnext import resnext101_32x8d as resnext101
 from models.densenet import densenet201
 from models.swintransformer import swin_small
+from models.mobilenet import MobileNetV2
 from utils import set_random_seed, read_data, train_loop, get_logger
 
 
@@ -82,6 +83,8 @@ def run(args):
         model = densenet201(num_classes=args.num_classes).to(device)
     elif args.model == 'swint':
         model = swin_small(num_classes=args.num_classes).to(device)
+    elif args.model == 'mobilenet':
+        model = MobileNetV2(num_classes=args.num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
     print(f"Using model: {args.model}")

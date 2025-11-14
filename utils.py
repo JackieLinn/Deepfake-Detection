@@ -8,6 +8,14 @@ import numpy as np
 from tqdm import tqdm
 from sklearn.metrics import precision_score, recall_score, f1_score, roc_auc_score
 
+from models.alexnet import AlexNet
+from models.googlenet import GoogLeNet
+from models.resnet import resnet101
+from models.resnext import resnext101_32x8d as resnext101
+from models.densenet import densenet201
+from models.swintransformer import swin_small
+from models.mobilenet import MobileNetV2
+
 
 def set_random_seed(seed):
     random.seed(seed)  # Python的随机种子
@@ -197,3 +205,24 @@ def train_loop(model, optimizer, train_loader, test_loader, device, epoch, logge
                     f'auc: {auc}')
 
     return test_acc, all_labels, all_preds
+
+
+def create_model(model_name: str, device, num_classes: int):
+    if model_name == "alexnet":
+        model = AlexNet(num_classes=num_classes).to(device)
+    elif model_name == 'googlenet':
+        model = GoogLeNet(num_classes=num_classes).to(device)
+    elif model_name == 'resnet':
+        model = resnet101(num_classes=num_classes).to(device)
+    elif model_name == 'resnext':
+        model = resnext101(num_classes=num_classes).to(device)
+    elif model_name == 'densenet':
+        model = densenet201(num_classes=num_classes).to(device)
+    elif model_name == 'swint':
+        model = swin_small(num_classes=num_classes).to(device)
+    elif model_name == 'mobilenet':
+        model = MobileNetV2(num_classes=num_classes).to(device)
+    else:
+        raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
+
+    return model

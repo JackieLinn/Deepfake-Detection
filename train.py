@@ -5,14 +5,7 @@ import torch.optim as optim
 from torchvision import transforms
 
 from my_dataset import MyDataSet
-from models.alexnet import AlexNet
-from models.googlenet import GoogLeNet
-from models.resnet import resnet101
-from models.resnext import resnext101_32x8d as resnext101
-from models.densenet import densenet201
-from models.swintransformer import swin_small
-from models.mobilenet import MobileNetV2
-from utils import set_random_seed, read_data, train_loop, get_logger
+from utils import set_random_seed, read_data, train_loop, get_logger, create_model
 
 
 def run(args):
@@ -26,8 +19,8 @@ def run(args):
     img_size = 256
     data_transform = {
         "train": transforms.Compose([
-            transforms.Resize(int(img_size * 1.143)),
-            transforms.CenterCrop(img_size),
+            # transforms.Resize(int(img_size * 1.143)),
+            # transforms.CenterCrop(img_size),
             transforms.RandomHorizontalFlip(),  # 随机水平翻转
             transforms.RandomRotation(90),  # 90度倍数随机旋转
             transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1),  # 颜色抖动
@@ -36,8 +29,8 @@ def run(args):
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])  # 标准化
         ]),
         "test": transforms.Compose([
-            transforms.Resize(int(img_size * 1.143)),
-            transforms.CenterCrop(img_size),
+            # transforms.Resize(int(img_size * 1.143)),
+            # transforms.CenterCrop(img_size),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
@@ -71,22 +64,7 @@ def run(args):
                                               collate_fn=test_dataset.collate_fn)
 
     # 构造模型
-    if args.model == "alexnet":
-        model = AlexNet(num_classes=args.num_classes).to(device)
-    elif args.model == 'googlenet':
-        model = GoogLeNet(num_classes=args.num_classes).to(device)
-    elif args.model == 'resnet':
-        model = resnet101(num_classes=args.num_classes).to(device)
-    elif args.model == 'resnext':
-        model = resnext101(num_classes=args.num_classes).to(device)
-    elif args.model == 'densenet':
-        model = densenet201(num_classes=args.num_classes).to(device)
-    elif args.model == 'swint':
-        model = swin_small(num_classes=args.num_classes).to(device)
-    elif args.model == 'mobilenet':
-        model = MobileNetV2(num_classes=args.num_classes).to(device)
-    else:
-        raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
+    model = create_model(args.model, args.device, args.num_classes)
     print(f"Using model: {args.model}")
 
     if args.weights != "":

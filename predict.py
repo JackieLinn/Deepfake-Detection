@@ -7,19 +7,14 @@ from PIL import Image
 from torchvision import transforms
 import matplotlib.pyplot as plt
 
-from models.alexnet import AlexNet
-from models.googlenet import GoogLeNet
-from models.resnet import resnet101
-from models.resnext import resnext101_32x8d as resnext101
-from models.densenet import densenet201
-from models.swintransformer import swin_small
-from models.mobilenet import MobileNetV2
+from utils import create_model
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint', 'mobilenet'], help='model name')
+                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint', 'mobilenet'],
+                        help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()
     print(f"Using model: {args.model}")
@@ -50,22 +45,7 @@ def main():
         class_indict = json.load(f)
 
     # create model
-    if args.model == "alexnet":
-        model = AlexNet(num_classes=args.num_classes).to(device)
-    elif args.model == 'googlenet':
-        model = GoogLeNet(num_classes=args.num_classes).to(device)
-    elif args.model == 'resnet':
-        model = resnet101(num_classes=args.num_classes).to(device)
-    elif args.model == 'resnext':
-        model = resnext101(num_classes=args.num_classes).to(device)
-    elif args.model == 'densenet':
-        model = densenet201(num_classes=args.num_classes).to(device)
-    elif args.model == 'swint':
-        model = swin_small(num_classes=args.num_classes).to(device)
-    elif args.model == 'mobilenet':
-        model = MobileNetV2(num_classes=args.num_classes).to(device)
-    else:
-        raise ValueError(f"Unsupported model: {args.model}. Please select an existing model.")
+    model = create_model(args.model, device, args.num_classes)
 
     # load model weights
     weights_path = f"./save/best_{args.model}_model.pth"

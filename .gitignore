@@ -1,3 +1,5 @@
+/.idea
+
 /dataset/train
 /dataset/test
 
@@ -5,3 +7,5 @@
 /logs/*.txt
 
 /save/*.pth
+
+/backup

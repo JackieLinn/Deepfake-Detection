@@ -13,7 +13,7 @@ from utils import create_model
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
-                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint', 'mobilenet'],
+                        choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint', 'mobilenet', 'mit'],
                         help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()

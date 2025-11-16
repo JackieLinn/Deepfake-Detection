@@ -15,6 +15,7 @@ from models.resnext import resnext101_32x8d as resnext101
 from models.densenet import densenet201
 from models.swintransformer import swin_small
 from models.mobilenet import MobileNetV2
+from models.mobilevit import mobile_vit_small as mit
 
 
 def set_random_seed(seed):
@@ -222,6 +223,8 @@ def create_model(model_name: str, device, num_classes: int):
         model = swin_small(num_classes=num_classes).to(device)
     elif model_name == 'mobilenet':
         model = MobileNetV2(num_classes=num_classes).to(device)
+    elif model_name == 'mit':
+        model = mit(num_classes=num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
 

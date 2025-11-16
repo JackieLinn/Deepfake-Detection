@@ -17,6 +17,7 @@ from models.swintransformer import swin_small
 from models.mobilenet import MobileNetV2
 from models.mobilevit import mobile_vit_small as mit
 from models.regnet import create_regnet
+from models.convnext import convnext_small
 
 
 def set_random_seed(seed):
@@ -228,6 +229,8 @@ def create_model(model_name: str, device, num_classes: int):
         model = mit(num_classes=num_classes).to(device)
     elif model_name == 'regnet':
         model = create_regnet(num_classes=num_classes).to(device)
+    elif model_name == 'convnext':
+        model = convnext_small(num_classes=num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
 

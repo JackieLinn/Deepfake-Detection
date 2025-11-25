@@ -20,6 +20,7 @@ from models.regnet import create_regnet
 from models.convnext import convnext_small
 from models.efficientnet import efficientnet_b2 as efficientnet
 from models.efficientnetv2 import efficientnetv2_m as efficientnetv2
+from models.xception import xception
 
 
 def set_random_seed(seed):
@@ -237,6 +238,8 @@ def create_model(model_name: str, device, num_classes: int):
         model = efficientnet(num_classes=num_classes).to(device)
     elif model_name == 'ev2':
         model = efficientnetv2(num_classes=num_classes).to(device)
+    elif model_name == 'xception':
+        model = xception(num_classes=num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
 

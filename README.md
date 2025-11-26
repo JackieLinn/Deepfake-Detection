@@ -11,8 +11,6 @@ This is a midterm assignment for the Introduction to Artificial Intelligence cou
 On the other hand, this can also serve as a repository for various common classification models. The code is fully
 encapsulated and can be run with one click, including the entire process of the classification task.
 
-[TOC]
-
 ## Get Started
 
 ```bash

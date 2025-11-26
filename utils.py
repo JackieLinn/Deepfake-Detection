@@ -23,6 +23,7 @@ from models.efficientnetv2 import efficientnetv2_m as efficientnetv2
 from models.xception import xception
 from models.shufflenet import shufflenet_v2_x2_0 as shufflenet
 from models.visiontransformer import vit_base_patch16_256_in21k as vit
+from models.vgg import vgg19_bn as vgg
 
 
 def set_random_seed(seed):
@@ -246,6 +247,8 @@ def create_model(model_name: str, device, num_classes: int):
         model = shufflenet(num_classes=num_classes).to(device)
     elif model_name == 'vit':
         model = vit(num_classes=num_classes).to(device)
+    elif model_name == 'vgg':
+        model = vgg(num_classes=num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
 

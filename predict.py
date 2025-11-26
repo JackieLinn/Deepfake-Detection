@@ -14,7 +14,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', type=str, default='alexnet',
                         choices=['alexnet', 'googlenet', 'resnet', 'resnext', 'densenet', 'swint', 'mobilenet', 'mit',
-                                 'regnet', 'convnext', 'efficientnet', 'ev2', 'xception', 'shufflenet'],
+                                 'regnet', 'convnext', 'efficientnet', 'ev2', 'xception', 'shufflenet', 'vit'],
                         help='model name')
     parser.add_argument('--num_classes', type=int, default=2)
     args = parser.parse_args()

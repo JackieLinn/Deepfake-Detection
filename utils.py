@@ -21,6 +21,7 @@ from models.convnext import convnext_small
 from models.efficientnet import efficientnet_b2 as efficientnet
 from models.efficientnetv2 import efficientnetv2_m as efficientnetv2
 from models.xception import xception
+from models.shufflenet import shufflenet_v2_x2_0 as shufflenet
 
 
 def set_random_seed(seed):
@@ -240,6 +241,8 @@ def create_model(model_name: str, device, num_classes: int):
         model = efficientnetv2(num_classes=num_classes).to(device)
     elif model_name == 'xception':
         model = xception(num_classes=num_classes).to(device)
+    elif model_name == 'shufflenet':
+        model = shufflenet(num_classes=num_classes).to(device)
     else:
         raise ValueError(f"Unsupported model: {model_name}. Please select an existing model.")
 

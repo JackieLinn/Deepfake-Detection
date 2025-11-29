@@ -77,4 +77,12 @@ And the prediction code can be executed using the following script:
 python predict.py --model model_name
 ```
 
+Finally, you can draw the relevant indicator charts by running the code in `draw_indicators.ipynb`.
+
+## Partial effect display:
+
+<figure style="display: flex; align-items: center; justify-content: center;">
+    <img src="./figures/all_models_combined.png" alt="">
+</figure>
+
 ### If you are interested in this project, feel free to fork and star!

@@ -9,7 +9,7 @@ from utils import set_random_seed, read_data, train_loop, get_logger, create_mod
 
 
 def run(args):
-    set_random_seed(3407)
+    set_random_seed(args.seed)
 
     device = torch.device(args.device if torch.cuda.is_available() else "cpu")
     print("Using {}".format(device))

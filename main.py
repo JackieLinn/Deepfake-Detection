@@ -14,6 +14,7 @@ def main():
     parser.add_argument('--batch-size', type=int, default=16)
     parser.add_argument('--lr', type=float, default=0.00001)
     parser.add_argument('--data-path', type=str, default="./dataset")
+    parser.add_argument('--seed', type=int, default=3407)
     # 预训练权重路径，如果不想载入就设置为空字符
     parser.add_argument('--weights', type=str, default='', help='initial weights path')
     # 是否冻结权重
